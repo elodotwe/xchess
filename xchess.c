@@ -21,7 +21,7 @@ int main() {
 
 	window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 200, 100, 0, blackColor, whiteColor);
 
-	XSelectInput(display, window, ExposureMask);
+	XSelectInput(display, window, ExposureMask | StructureNotifyMask);
 	XMapWindow(display, window);
 
 	gc = XCreateGC(display, window, 0, 0);
@@ -37,6 +37,11 @@ int main() {
 			case Expose:
 				printf("So naked\n");
 				on_expose();
+				break;
+			case ConfigureNotify:
+				printf("ConfigureNotify\n");
+				XConfigureEvent conf = e.xconfigure;
+				printf("%d by %d\n", conf.width, conf.height);
 				break;
 			default:
 				printf("Something else %d\n", e.type);
