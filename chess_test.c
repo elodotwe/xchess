@@ -1,10 +1,12 @@
 #include "chess.h"
 #include <assert.h>
+#include <stdio.h>
 
 void test_initialize();
 
 void main() {
 	test_initialize();
+	printf("All tests \e[30;42mPASS\e[m\n");
 }
 
 // When I set up a new board:
@@ -29,10 +31,9 @@ void test_initialize() {
 		assert(context.cell_type[x][0] == row0[x]);
 	}
 
-	piece_t pawn_row[8] = {CHESS_PIECE_PAWN};
 	for (int x = 0; x < 8; x++) {
-		assert(context.cell_type[x][1] == pawn_row[x]);
-		assert(context.cell_type[x][6] == pawn_row[x]);
+		assert(context.cell_type[x][1] == CHESS_PIECE_PAWN);
+		assert(context.cell_type[x][6] == CHESS_PIECE_PAWN);
 	}
 
 	piece_t row7[] = {CHESS_PIECE_ROOK, CHESS_PIECE_BISHOP, CHESS_PIECE_KNIGHT,
