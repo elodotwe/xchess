@@ -7,15 +7,16 @@
 Window window;
 Display* display;
 GC gc;
-
+int blackColor;
+int whiteColor;
 void on_expose();
 
 int main() {
 	display = XOpenDisplay(0);
 	assert(display);
 
-	int blackColor = BlackPixel(display, DefaultScreen(display));
-	int whiteColor = WhitePixel(display, DefaultScreen(display));
+	blackColor = BlackPixel(display, DefaultScreen(display));
+	whiteColor = WhitePixel(display, DefaultScreen(display));
 	printf("black color is %d, white is %d\n", blackColor, whiteColor);
 
 	window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 200, 100, 0, blackColor, whiteColor);
@@ -48,7 +49,15 @@ int main() {
 
 void on_expose() {
 	printf("about to draw\n");
+	XSetForeground(display, gc, blackColor);
 	//XSetWindowBackground(display, window, whiteColor);
 	XDrawLine(display, window, gc, 10, 60, 180, 20);
+	XColor red;
+	red.red = 65535;
+	red.green = 0;
+	red.blue = 0;
+	red.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(display, DefaultColormap(display, 0), &red);
+	XSetForeground(display, gc, red.pixel);
 	XDrawString(display, window, gc, 50, 50, "Hello world", 11);
 }
